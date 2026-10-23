@@ -2,15 +2,23 @@ import sqlite3
 
 
 class DatabaseManager:
-    def __init__(self):
-        self.con = sqlite3.connect("qwerty.db")
-        self.cursor = self.con.cursor()
+    def __init__(self, db_name="qwerty.db"):
+        self.conn = sqlite3.connect(db_name)
+        self.cursor = self.conn.cursor()
         self.create_tables()
 
     def create_tables(self):
-        self.cursor = self.con.cursor()
+        self.cursor.execute('''
+                            CREATE TABLE IF NOT EXISTS master
+                            (
+                                salt
+                                BLOB,
+                                ciphertext
+                                BLOB
+                            )
+                            ''')
 
-        self.cursor.execute("""
+        self.cursor.execute('''
                             CREATE TABLE IF NOT EXISTS accounts
                             (
                                 id
@@ -18,57 +26,35 @@ class DatabaseManager:
                                 PRIMARY
                                 KEY
                                 AUTOINCREMENT,
-                                service_name
-                                TEXT
-                                NOT
-                                NULL,
+                                service
+                                TEXT,
                                 login
+                                TEXT,
+                                password
                                 TEXT
-                                NOT
-                                NULL,
-                                encrypted_password
-                                TEXT
-                                NOT
-                                NULL
                             )
-                            """)
+                            ''')
+        self.conn.commit()
 
-        self.cursor.execute("""
-                            CREATE TABLE IF NOT EXISTS master_password
-                            (
-                                salt
-                                BLOB,
-                                ciphertext
-                                BLOB
-                            )
-                            """)
-        self.con.commit()
+    def save_master_password(self, salt, ciphertext):
+        self.cursor.execute('DELETE FROM master')
+        self.cursor.execute('INSERT INTO master (salt, ciphertext) VALUES (?, ?)', (salt, ciphertext))
+        self.conn.commit()
 
-    def save_master_password(self,  salt, ciphertext):
-        self.cursor.execute("DELETE FROM master_password")
-        self.cursor.execute(
-            """
-            INSERT INTO master_password (salt, ciphertext)
-            VALUES (?, ?)
-            """,
-            (salt, ciphertext),
-        )
-        self.con.commit()
-
-    def add_account(self, login, encrypted_password):
-        self.cursor.execute(
-            """
-            INSERT INTO accounts (service_name, login, encrypted_password)
-            VALUES (?, ?, ?)
-            """,
-            (login, encrypted_password),
-        )
-        self.con.commit()
+    def close(self):
+        self.conn.close()
 
     def get_all_accounts(self):
-        self.cursor.execute("SELECT * FROM accounts")
+        self.cursor.execute('SELECT id, service, login, password FROM accounts')
         return self.cursor.fetchall()
 
+    def add_account(self, service, login, encrypted_password):
+        self.cursor.execute(
+            'INSERT INTO accounts (service, login, password) VALUES (?, ?, ?)',
+            (service, login, encrypted_password)
+        )
+        self.conn.commit()
+
     def get_master_password(self):
-        self.cursor.execute('SELECT salt, ciphertext FROM master_password')
+        self.cursor.execute('SELECT salt, ciphertext FROM master')
         return self.cursor.fetchone()
