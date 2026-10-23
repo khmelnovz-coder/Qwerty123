@@ -6,7 +6,6 @@ from password import SecurityManager
 from database import DatabaseManager
 from Qwerty123_main import Qwerty123_m
 import webbrowser
-import time
 
 
 class Qwerty123(QMainWindow, Ui_Qwerty1234):
