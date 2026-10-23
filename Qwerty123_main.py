@@ -37,7 +37,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
             for acc in accounts:
                 service_name = acc[1]
                 item = QListWidgetItem(service_name)
-                item.setData(QtCore.ItemDataRole.UserRole, acc)
+                item.setData(QtCore.Qt.ItemDataRole.UserRole, acc)
                 self.listWidget.addItem(item)
 
     def display_account_details(self, item):
