@@ -107,7 +107,6 @@ class SecurityManager:
             raise ValueError("Ключ шифрования не задан!")
         f = Fernet(self.key)
         return f.encrypt(password_sql.encode())
-
     def generate_pass(self, level=1):
         if level == 1:
             data = []
@@ -127,6 +126,7 @@ class SecurityManager:
                     f += random.choice(self.digits + self.lowercase)
                 data.append(f)
             return "-".join(data)
+
         if level == 3:
             f = ''
             for _ in range(8):

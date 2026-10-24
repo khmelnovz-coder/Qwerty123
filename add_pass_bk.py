@@ -1,6 +1,9 @@
 import sys
-from PyQt6.QtWidgets import QMainWindow, QListWidgetItem
+from PyQt6.QtWidgets import QMainWindow, QListWidgetItem, QLineEdit, QMessageBox, QApplication
+from PyQt6.QtCore import QEvent
 from ui.Add_password_frontend import Ui_Add_password
+from password import SecurityManager
+import random
 
 
 class Add_pass(QMainWindow, Ui_Add_password):
@@ -9,13 +12,60 @@ class Add_pass(QMainWindow, Ui_Add_password):
         self.setupUi(self)
         self.cancel.clicked.connect(self.cancel_new)
         self.save_new_pass.clicked.connect(self.save_new_pass_def)
+        self.level_1.setChecked(True)
+        self.current_level = 1 if self.level_1.isChecked() else (2 if self.level_2.isChecked() else 3)
+        self.sec = SecurityManager()
+        self.pass_add.setText(self.sec.generate_pass(self.current_level))
+        self.pass_add.setEchoMode(QLineEdit.EchoMode.Password)
+        self.pass_add.installEventFilter(self)
+        self.n = random.randint(0, 2)
+        self.level_1.toggled.connect(self.cr_new_pass_def)
+        self.level_2.toggled.connect(self.cr_new_pass_def)
+        self.level_3.toggled.connect(self.cr_new_pass_def)
+
+        if self.n == 0:
+            self.login_add.setPlaceholderText("example@gmail.com")
+            self.site_add.setPlaceholderText("google.com")
+        elif self.n == 1:
+            self.login_add.setPlaceholderText("example@yandex.ru")
+            self.site_add.setPlaceholderText("music.yanex.ru")
+        else:
+            self.login_add.setPlaceholderText("typer_666")
+            self.site_add.setPlaceholderText("monkeytype.com")
 
     def cancel_new(self):
         sys.exit(0)
 
+    def eventFilter(self, obj, event):
+        if obj == self.pass_add:
+            if event.type() == QEvent.Type.Enter:
+                self.pass_add.setEchoMode(QLineEdit.EchoMode.Normal)
+            elif event.type() == QEvent.Type.Leave:
+                self.pass_add.setEchoMode(QLineEdit.EchoMode.Password)
+            elif event.type() == QEvent.Type.MouseButtonPress:
+                password_text = self.pass_add.text()
+                if password_text:
+                    QApplication.clipboard().setText(password_text)
+                    self.statusbar.showMessage("Пароль скопирован в буфер обмена!", 3000)
+
+        return super().eventFilter(obj, event)
+
+    def cr_new_pass_def(self):
+        btn = self.sender()
+        if btn.isChecked():
+            btm = self.sender()
+            if self.level_1.isChecked():
+                current_level = 1
+            elif self.level_2.isChecked():
+                current_level = 2
+            else:
+                current_level = 3
+
+
+            self.pass_add.setText(str(self.sec.generate_pass(current_level)))
+
     def save_new_pass_def(self):
         good_password = True
-
         if not self.title_add.text():
             good_password = False
             self.title_add.setStyleSheet("border: 1px solid red;")
@@ -43,3 +93,6 @@ class Add_pass(QMainWindow, Ui_Add_password):
         if not good_password:
             self.statusBar().showMessage("Не забудь ввести данные", 5000)
 
+        else:
+            if "@" in self.login_add.text():
+                pass
