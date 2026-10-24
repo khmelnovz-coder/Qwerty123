@@ -103,10 +103,12 @@ class SecurityManager:
         return f.decrypt(password_sql).decode()
 
     def encode(self, password_sql, salt):
+        print(self.key)
         if not self.key:
             raise ValueError("Ключ шифрования не задан!")
         f = Fernet(self.key)
         return f.encrypt(password_sql.encode())
+
     def generate_pass(self, level=1):
         if level == 1:
             data = []

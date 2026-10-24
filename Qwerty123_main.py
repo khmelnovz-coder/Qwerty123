@@ -16,6 +16,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.setupUi(self)
         self.listWidget.itemClicked.connect(self.display_account_details)
         self.no_item = True
+        self.accounts = self.db.get_all_accounts()
         self.cr_new_pass.clicked.connect(self.create_pass)
 
         self.load_accounts()
@@ -31,12 +32,13 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
             self.website.setText("")
             self.password.setText("")
             self.user.setText("")
-            accounts = self.db.get_all_accounts()
-            for acc in accounts:
+
+            for acc in self.accounts:
                 service_name = acc[1]
                 item = QListWidgetItem(service_name)
                 item.setData(QtCore.Qt.ItemDataRole.UserRole, acc)
                 self.listWidget.addItem(item)
+
 
     def display_account_details(self, item):
         acc_data = item.data(QtCore.Qt.ItemDataRole.UserRole)
@@ -44,7 +46,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         service_name = acc_data[1]
         login = acc_data[2]
         encrypted_pass = acc_data[3]
-        decrypted_pass = self.sec.decrypt_password(encrypted_pass, self.master_key)
+        decrypted_pass = self.sec.decoding(encrypted_pass, self.master_key)
         self.no_item = False
         self.no_item_choosen.hide()
         self.title.setText(service_name)
@@ -52,6 +54,11 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.password.setText(decrypted_pass)
         self.website.setText(service_name)
 
+
+
+
+
     def create_pass(self):
-        self.add_pass = Add_pass()
+        self.add_pass = Add_pass(self.sec)
         self.add_pass.show()
+

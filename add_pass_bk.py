@@ -3,18 +3,21 @@ from PyQt6.QtWidgets import QMainWindow, QListWidgetItem, QLineEdit, QMessageBox
 from PyQt6.QtCore import QEvent
 from ui.Add_password_frontend import Ui_Add_password
 from password import SecurityManager
+from database import DatabaseManager
 import random
+import sqlite3
 
 
 class Add_pass(QMainWindow, Ui_Add_password):
-    def __init__(self):
+    def __init__(self, security_manager):
         super().__init__()
         self.setupUi(self)
         self.cancel.clicked.connect(self.cancel_new)
         self.save_new_pass.clicked.connect(self.save_new_pass_def)
         self.level_1.setChecked(True)
         self.current_level = 1 if self.level_1.isChecked() else (2 if self.level_2.isChecked() else 3)
-        self.sec = SecurityManager()
+        self.sec = security_manager
+        self.db = DatabaseManager()
         self.pass_add.setText(self.sec.generate_pass(self.current_level))
         self.pass_add.setEchoMode(QLineEdit.EchoMode.Password)
         self.pass_add.installEventFilter(self)
@@ -34,7 +37,7 @@ class Add_pass(QMainWindow, Ui_Add_password):
             self.site_add.setPlaceholderText("monkeytype.com")
 
     def cancel_new(self):
-        sys.exit(0)
+        self.close()
 
     def eventFilter(self, obj, event):
         if obj == self.pass_add:
@@ -60,7 +63,6 @@ class Add_pass(QMainWindow, Ui_Add_password):
                 current_level = 2
             else:
                 current_level = 3
-
 
             self.pass_add.setText(str(self.sec.generate_pass(current_level)))
 
@@ -96,3 +98,23 @@ class Add_pass(QMainWindow, Ui_Add_password):
         else:
             if "@" in self.login_add.text():
                 pass
+            salt, chip = self.db.get_master_password()
+            con = sqlite3.connect("qwerty.db")
+            cur = con.cursor()
+            service = self.title_add.text()
+            login = self.login_add.text()
+            password = self.sec.encode(self.pass_add.text(), salt=salt)
+            website = self.site_add.text()
+            cur.execute(
+                """
+                INSERT INTO accounts (service, login, password, website)
+                VALUES (?, ?, ?, ?)
+                """,
+                (service, login, password, website)
+            )
+            con.commit()
+            con.close()
+            self.close()
+
+
+

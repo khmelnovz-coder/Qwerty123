@@ -59,6 +59,7 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
                     salt, ciphertext = self.sec.setup(password)
                     self.db.save_master_password(salt, ciphertext)
 
+
                     self.main_window = Qwerty123_m(self.db, self.sec, password)
                     self.main_window.show()
                     self.close()
