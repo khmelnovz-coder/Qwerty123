@@ -12,71 +12,211 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Qwerty_main(object):
     def setupUi(self, Qwerty_main):
         Qwerty_main.setObjectName("Qwerty_main")
-        Qwerty_main.resize(950, 600)
+        Qwerty_main.resize(1020, 660)
+
+        # Профессиональный стиль macOS (темная тема с карточками и отступами)
+        Qwerty_main.setStyleSheet("""
+            QMainWindow {
+                background-color: #1e1e20;
+            }
+            /* Сайдбар слева */
+            #sidebar_container {
+                background-color: #161618;
+                border-radius: 12px;
+            }
+            QListWidget {
+                background-color: transparent;
+                border: none;
+                padding: 4px;
+                color: #f2f2f7;
+                font-size: 13px;
+                outline: none;
+            }
+            QListWidget::item {
+                background-color: transparent;
+                padding: 10px 12px;
+                border-radius: 8px;
+                margin-bottom: 4px;
+                color: #aeaeb2;
+            }
+            QListWidget::item:selected {
+                background-color: #0a84ff;
+                color: #ffffff;
+                font-weight: 600;
+            }
+            QListWidget::item:hover {
+                background-color: #2c2c2e;
+                color: #f2f2f7;
+            }
+            /* Кнопка создания пароля в сайдбаре */
+            QPushButton#cr_new_pass {
+                background-color: #0a84ff;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 10px 16px;
+                font-size: 13px;
+                font-weight: 600;
+                text-align: center;
+            }
+            QPushButton#cr_new_pass:hover {
+                background-color: #0071e3;
+            }
+            QPushButton#cr_new_pass:pressed {
+                background-color: #005bb5;
+            }
+            /* Правая карточка с деталями */
+            #widget {
+                background-color: #252528;
+                border: 1px solid #333336;
+                border-radius: 14px;
+            }
+            #title {
+                font-size: 24px;
+                font-weight: bold;
+                color: #ffffff;
+            }
+            #no_item_choosen {
+                font-size: 15px;
+                font-weight: 500;
+                color: #636366;
+            }
+            #label_6, #label_7, #label_8 {
+                color: #8e8e93;
+                font-weight: 600;
+                font-size: 13px;
+            }
+            #user, #password, #website {
+                background-color: #1e1e20;
+                border: 1px solid #3a3a3c;
+                border-radius: 8px;
+                padding: 10px 14px;
+                color: #f2f2f7;
+                font-size: 13px;
+            }
+            QMenuBar {
+                background-color: #1e1e20;
+                color: #8e8e93;
+            }
+            QStatusBar {
+                background-color: #1e1e20;
+                color: #8e8e93;
+                border-top: 1px solid #2c2c2e;
+            }
+        """)
+
         self.centralwidget = QtWidgets.QWidget(parent=Qwerty_main)
         self.centralwidget.setObjectName("centralwidget")
+
+        # Главный горизонтальный контейнер с отступами от краев окна
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setContentsMargins(16, 16, 16, 16)
+        self.horizontalLayout.setSpacing(16)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.listWidget = QtWidgets.QListWidget(parent=self.centralwidget)
+
+        # Левый контейнер (сайдбар: кнопка + список)
+        self.sidebar_container = QtWidgets.QWidget(parent=self.centralwidget)
+        self.sidebar_container.setObjectName("sidebar_container")
+        self.sidebar_layout = QtWidgets.QVBoxLayout(self.sidebar_container)
+        self.sidebar_layout.setContentsMargins(12, 12, 12, 12)
+        self.sidebar_layout.setSpacing(10)
+
+        # Кнопка создания пароля наверх сайдбара
+        self.cr_new_pass = QtWidgets.QPushButton(parent=self.sidebar_container)
+        self.cr_new_pass.setObjectName("cr_new_pass")
+        self.sidebar_layout.addWidget(self.cr_new_pass)
+
+        # Список элементов
+        self.listWidget = QtWidgets.QListWidget(parent=self.sidebar_container)
         self.listWidget.setObjectName("listWidget")
-        self.horizontalLayout.addWidget(self.listWidget)
+        self.sidebar_layout.addWidget(self.listWidget)
+
+        self.sidebar_container.setFixedWidth(280)
+        self.horizontalLayout.addWidget(self.sidebar_container)
+
+        # Правая панель (карточка с деталями)
         self.widget = QtWidgets.QWidget(parent=self.centralwidget)
-        self.widget.setMinimumSize(QtCore.QSize(650, 0))
         self.widget.setObjectName("widget")
+
         self.gridLayout = QtWidgets.QGridLayout(self.widget)
+        self.gridLayout.setContentsMargins(40, 35, 40, 35)
+        self.gridLayout.setHorizontalSpacing(24)
+        self.gridLayout.setVerticalSpacing(16)
         self.gridLayout.setObjectName("gridLayout")
-        spacerItem = QtWidgets.QSpacerItem(20, 194, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout.addItem(spacerItem, 1, 1, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 194, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout.addItem(spacerItem1, 5, 1, 1, 1)
-        self.user = QtWidgets.QLabel(parent=self.widget)
-        self.user.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.user.setObjectName("user")
-        self.gridLayout.addWidget(self.user, 1, 2, 1, 1)
-        self.website = QtWidgets.QLabel(parent=self.widget)
-        self.website.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.website.setObjectName("website")
-        self.gridLayout.addWidget(self.website, 5, 2, 1, 1)
-        self.label_6 = QtWidgets.QLabel(parent=self.widget)
-        self.label_6.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_6.setObjectName("label_6")
-        self.gridLayout.addWidget(self.label_6, 1, 0, 1, 1)
-        self.label_7 = QtWidgets.QLabel(parent=self.widget)
-        self.label_7.setMouseTracking(False)
-        self.label_7.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_7.setObjectName("label_7")
-        self.gridLayout.addWidget(self.label_7, 2, 0, 1, 1)
-        self.password = QtWidgets.QLabel(parent=self.widget)
-        self.password.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.password.setObjectName("password")
-        self.gridLayout.addWidget(self.password, 2, 2, 1, 1)
-        self.label_8 = QtWidgets.QLabel(parent=self.widget)
-        self.label_8.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_8.setObjectName("label_8")
-        self.gridLayout.addWidget(self.label_8, 5, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(223, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.gridLayout.addItem(spacerItem2, 3, 0, 1, 1)
-        self.no_item_choosen = QtWidgets.QLabel(parent=self.widget)
-        self.no_item_choosen.setStyleSheet(" font-size: 16px; font-weight: bold; color: #555555;\n"
-"")
-        self.no_item_choosen.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.no_item_choosen.setObjectName("no_item_choosen")
-        self.gridLayout.addWidget(self.no_item_choosen, 2, 1, 2, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(222, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.gridLayout.addItem(spacerItem3, 3, 2, 1, 1)
+
+        # Верхний пружинный отступ для центрирования содержимого карточки
+        spacer_top = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum,
+                                           QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout.addItem(spacer_top, 0, 0, 1, 2)
+
+        # Заголовок аккаунта (выровнен по центру)
         self.title = QtWidgets.QLabel(parent=self.widget)
         self.title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.title.setObjectName("title")
-        self.gridLayout.addWidget(self.title, 0, 1, 1, 1)
-        self.cr_new_pass = QtWidgets.QPushButton(parent=self.widget)
-        self.cr_new_pass.setObjectName("cr_new_pass")
-        self.gridLayout.addWidget(self.cr_new_pass, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.title, 1, 0, 1, 2)
+
+        # Создаем остальные элементы
+        self.label_6 = QtWidgets.QLabel(parent=self.widget)
+        self.label_6.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_6.setObjectName("label_6")
+
+        self.user = QtWidgets.QLineEdit(parent=self.widget)
+        self.user.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.user.setObjectName("user")
+        self.user.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+
+        self.label_7 = QtWidgets.QLabel(parent=self.widget)
+        self.label_7.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_7.setObjectName("label_7")
+
+        self.password = QtWidgets.QLineEdit(parent=self.widget)
+        self.password.setReadOnly(True)
+
+        self.password.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.password.setObjectName("password")
+        self.password.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+
+        self.label_8 = QtWidgets.QLabel(parent=self.widget)
+        self.label_8.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_8.setObjectName("label_8")
+
+        self.website = QtWidgets.QLineEdit(parent=self.widget)
+        self.website.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.website.setObjectName("website")
+        self.website.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+
+        self.no_item_choosen = QtWidgets.QLabel(parent=self.widget)
+        self.no_item_choosen.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.no_item_choosen.setObjectName("no_item_choosen")
+
+        # Размещаем поля данных в сетке
+        self.gridLayout.addWidget(self.label_6, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.user, 2, 1, 1, 1)
+
+        self.gridLayout.addWidget(self.label_7, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.password, 3, 1, 1, 1)
+
+        self.gridLayout.addWidget(self.label_8, 4, 0, 1, 1)
+        self.gridLayout.addWidget(self.website, 4, 1, 1, 1)
+
+        # Заглушка по центру карточки
+        self.gridLayout.addWidget(self.no_item_choosen, 2, 0, 3, 2, QtCore.Qt.AlignmentFlag.AlignCenter)
+
+        # Нижний пружинный отступ
+        spacer_bottom = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum,
+                                              QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout.addItem(spacer_bottom, 5, 0, 1, 2)
+
+        self.gridLayout.setColumnStretch(1, 1)
+
         self.horizontalLayout.addWidget(self.widget)
         Qwerty_main.setCentralWidget(self.centralwidget)
+
         self.menubar = QtWidgets.QMenuBar(parent=Qwerty_main)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 950, 38))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1020, 24))
         self.menubar.setObjectName("menubar")
         Qwerty_main.setMenuBar(self.menubar)
+
         self.statusbar = QtWidgets.QStatusBar(parent=Qwerty_main)
         self.statusbar.setObjectName("statusbar")
         Qwerty_main.setStatusBar(self.statusbar)
@@ -86,13 +226,13 @@ class Ui_Qwerty_main(object):
 
     def retranslateUi(self, Qwerty_main):
         _translate = QtCore.QCoreApplication.translate
-        Qwerty_main.setWindowTitle(_translate("Qwerty_main", "MainWindow"))
+        Qwerty_main.setWindowTitle(_translate("Qwerty_main", "Пароли"))
         self.user.setText(_translate("Qwerty_main", "TextLabel"))
         self.website.setText(_translate("Qwerty_main", "TextLabel"))
-        self.label_6.setText(_translate("Qwerty_main", "Пользователь"))
-        self.label_7.setText(_translate("Qwerty_main", "Пароль"))
+        self.label_6.setText(_translate("Qwerty_main", "User Name"))
+        self.label_7.setText(_translate("Qwerty_main", "Password"))
         self.password.setText(_translate("Qwerty_main", "TextLabel"))
-        self.label_8.setText(_translate("Qwerty_main", "Сайт"))
-        self.no_item_choosen.setText(_translate("Qwerty_main", "Элемент не выбран"))
+        self.label_8.setText(_translate("Qwerty_main", "Website"))
+        self.no_item_choosen.setText(_translate("Qwerty_main", "Выберите элемент из списка"))
         self.title.setText(_translate("Qwerty_main", "TextLabel"))
         self.cr_new_pass.setText(_translate("Qwerty_main", "Создать пароль"))

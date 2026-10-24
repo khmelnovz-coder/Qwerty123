@@ -93,12 +93,12 @@ class Add_pass(QMainWindow, Ui_Add_password):
             self.pass_add.setStyleSheet("border: none;")
 
         if not good_password:
-            self.statusBar().showMessage("Не забудь ввести данные", 5000)
+            self.statusbar.showMessage("Не забудь ввести данные", 5000)
 
         else:
             if "@" in self.login_add.text():
                 pass
-            salt, chip = self.db.get_master_password()
+            salt, _ = self.db.get_master_password()
             con = sqlite3.connect("qwerty.db")
             cur = con.cursor()
             service = self.title_add.text()
@@ -115,6 +115,3 @@ class Add_pass(QMainWindow, Ui_Add_password):
             con.commit()
             con.close()
             self.close()
-
-
-
