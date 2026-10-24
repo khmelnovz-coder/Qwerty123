@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/Users/eugene/PycharmProjects/Qwerty123/ui/Qwerty_main.ui'
+# Form implementation generated from reading ui file 'Qwerty123.ui'
 #
 # Created by: PyQt6 UI code generator 6.11.0
 #
@@ -9,90 +9,112 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Qwerty_main(object):
-    def setupUi(self, Qwerty_main):
-        Qwerty_main.setObjectName("Qwerty_main")
-        Qwerty_main.resize(950, 600)
-        self.centralwidget = QtWidgets.QWidget(parent=Qwerty_main)
+class Ui_Qwerty1234(object):
+    def setupUi(self, Qwerty123):
+        Qwerty123.setObjectName("Qwerty123")
+        Qwerty123.resize(950, 600)
+        self.centralwidget = QtWidgets.QWidget(parent=Qwerty123)
         self.centralwidget.setObjectName("centralwidget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.listWidget = QtWidgets.QListWidget(parent=self.centralwidget)
-        self.listWidget.setObjectName("listWidget")
-        self.horizontalLayout.addWidget(self.listWidget)
-        self.widget = QtWidgets.QWidget(parent=self.centralwidget)
-        self.widget.setMinimumSize(QtCore.QSize(650, 0))
-        self.widget.setObjectName("widget")
-        self.gridLayout = QtWidgets.QGridLayout(self.widget)
+        self.stackedWidget = QtWidgets.QStackedWidget(parent=self.centralwidget)
+        self.stackedWidget.setGeometry(QtCore.QRect(0, 0, 935, 525))
+        self.stackedWidget.setStyleSheet("QLineEdit {\n"
+                                         "    border: 2px solid #1a62b6;\n"
+                                         "    border-radius: 12px;\n"
+                                         "    background-color: #ffffff;\n"
+                                         "    background: #ffffff;\n"
+                                         "    outline: none;\n"
+                                         "}\n"
+                                         "")
+        self.stackedWidget.setObjectName("stackedWidget")
+        self.page = QtWidgets.QWidget()
+        self.page.setObjectName("page")
+        self.gridLayout = QtWidgets.QGridLayout(self.page)
         self.gridLayout.setObjectName("gridLayout")
-        spacerItem = QtWidgets.QSpacerItem(20, 194, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout.addItem(spacerItem, 1, 1, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 194, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout.addItem(spacerItem1, 5, 1, 1, 1)
-        self.user = QtWidgets.QLabel(parent=self.widget)
-        self.user.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.user.setObjectName("user")
-        self.gridLayout.addWidget(self.user, 1, 2, 1, 1)
-        self.website = QtWidgets.QLabel(parent=self.widget)
-        self.website.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.website.setObjectName("website")
-        self.gridLayout.addWidget(self.website, 5, 2, 1, 1)
-        self.label_6 = QtWidgets.QLabel(parent=self.widget)
-        self.label_6.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_6.setObjectName("label_6")
-        self.gridLayout.addWidget(self.label_6, 1, 0, 1, 1)
-        self.label_7 = QtWidgets.QLabel(parent=self.widget)
-        self.label_7.setMouseTracking(False)
-        self.label_7.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_7.setObjectName("label_7")
-        self.gridLayout.addWidget(self.label_7, 2, 0, 1, 1)
-        self.password = QtWidgets.QLabel(parent=self.widget)
-        self.password.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.password.setObjectName("password")
-        self.gridLayout.addWidget(self.password, 2, 2, 1, 1)
-        self.label_8 = QtWidgets.QLabel(parent=self.widget)
-        self.label_8.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_8.setObjectName("label_8")
-        self.gridLayout.addWidget(self.label_8, 5, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(223, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.gridLayout.addItem(spacerItem2, 3, 0, 1, 1)
-        self.no_item_choosen = QtWidgets.QLabel(parent=self.widget)
-        self.no_item_choosen.setStyleSheet(" font-size: 16px; font-weight: bold; color: #555555;\n"
-"")
-        self.no_item_choosen.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.no_item_choosen.setObjectName("no_item_choosen")
-        self.gridLayout.addWidget(self.no_item_choosen, 2, 1, 2, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(222, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.gridLayout.addItem(spacerItem3, 3, 2, 1, 1)
-        self.title = QtWidgets.QLabel(parent=self.widget)
-        self.title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.title.setObjectName("title")
-        self.gridLayout.addWidget(self.title, 0, 1, 1, 1)
-        self.pushButton = QtWidgets.QPushButton(parent=self.widget)
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 0, 0, 1, 1)
-        self.horizontalLayout.addWidget(self.widget)
-        Qwerty_main.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(parent=Qwerty_main)
+        spacerItem = QtWidgets.QSpacerItem(20, 250, QtWidgets.QSizePolicy.Policy.Minimum,
+                                           QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout.addItem(spacerItem, 3, 1, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(286, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                            QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout.addItem(spacerItem1, 2, 2, 1, 1)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 159, QtWidgets.QSizePolicy.Policy.Minimum,
+                                            QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout.addItem(spacerItem2, 0, 1, 1, 1)
+        spacerItem3 = QtWidgets.QSpacerItem(286, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                            QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout.addItem(spacerItem3, 1, 2, 1, 1)
+        spacerItem4 = QtWidgets.QSpacerItem(287, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                            QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout.addItem(spacerItem4, 1, 0, 1, 1)
+        spacerItem5 = QtWidgets.QSpacerItem(287, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                            QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout.addItem(spacerItem5, 2, 0, 1, 1)
+        self.use_pass_btn = QtWidgets.QPushButton(parent=self.page)
+        self.use_pass_btn.setObjectName("use_pass_btn")
+        self.gridLayout.addWidget(self.use_pass_btn, 2, 1, 1, 1)
+        self.label_3 = QtWidgets.QLabel(parent=self.page)
+        self.label_3.setStyleSheet("font-size: 26px; font-weight: bold, \"Segoe UI\";\n"
+                                   "")
+        self.label_3.setObjectName("label_3")
+        self.gridLayout.addWidget(self.label_3, 1, 1, 1, 1)
+        self.stackedWidget.addWidget(self.page)
+        self.page_2 = QtWidgets.QWidget()
+        self.page_2.setObjectName("page_2")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.page_2)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        spacerItem6 = QtWidgets.QSpacerItem(20, 250, QtWidgets.QSizePolicy.Policy.Minimum,
+                                            QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout_2.addItem(spacerItem6, 4, 1, 1, 1)
+        self.label_2 = QtWidgets.QLabel(parent=self.page_2)
+        self.label_2.setStyleSheet("font-size: 26px; font-weight: bold, \"Segoe UI\";\n"
+                                   "")
+        self.label_2.setObjectName("label_2")
+        self.gridLayout_2.addWidget(self.label_2, 1, 1, 1, 1)
+        spacerItem7 = QtWidgets.QSpacerItem(290, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                            QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_2.addItem(spacerItem7, 1, 2, 1, 1)
+        spacerItem8 = QtWidgets.QSpacerItem(20, 168, QtWidgets.QSizePolicy.Policy.Minimum,
+                                            QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout_2.addItem(spacerItem8, 0, 1, 1, 1)
+        self.input_pass_1 = QtWidgets.QLineEdit(parent=self.page_2)
+        self.input_pass_1.setMinimumSize(QtCore.QSize(310, 0))
+        self.input_pass_1.setMaximumSize(QtCore.QSize(310, 16777215))
+        self.input_pass_1.setStyleSheet(
+            "QLineEdit { border: 2px solid #1a62b6;border-radius: 12px;background-color: #ffffff;background: #ffffff;outline: none;}l")
+        self.input_pass_1.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+        self.input_pass_1.setObjectName("input_pass_1")
+        self.gridLayout_2.addWidget(self.input_pass_1, 3, 1, 1, 1)
+        spacerItem9 = QtWidgets.QSpacerItem(291, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                            QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_2.addItem(spacerItem9, 1, 0, 1, 1)
+        spacerItem10 = QtWidgets.QSpacerItem(290, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                             QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_2.addItem(spacerItem10, 3, 2, 1, 1)
+        spacerItem11 = QtWidgets.QSpacerItem(291, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                             QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_2.addItem(spacerItem11, 3, 0, 1, 1)
+        self.stackedWidget.addWidget(self.page_2)
+        self.page_3 = QtWidgets.QWidget()
+        self.page_3.setObjectName("page_3")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.page_3)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.stackedWidget.addWidget(self.page_3)
+        Qwerty123.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(parent=Qwerty123)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 950, 38))
         self.menubar.setObjectName("menubar")
-        Qwerty_main.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(parent=Qwerty_main)
+        Qwerty123.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(parent=Qwerty123)
         self.statusbar.setObjectName("statusbar")
-        Qwerty_main.setStatusBar(self.statusbar)
+        Qwerty123.setStatusBar(self.statusbar)
 
-        self.retranslateUi(Qwerty_main)
-        QtCore.QMetaObject.connectSlotsByName(Qwerty_main)
+        self.retranslateUi(Qwerty123)
+        self.stackedWidget.setCurrentIndex(1)
+        QtCore.QMetaObject.connectSlotsByName(Qwerty123)
 
-    def retranslateUi(self, Qwerty_main):
+    def retranslateUi(self, Qwerty123):
         _translate = QtCore.QCoreApplication.translate
-        Qwerty_main.setWindowTitle(_translate("Qwerty_main", "MainWindow"))
-        self.user.setText(_translate("Qwerty_main", "TextLabel"))
-        self.website.setText(_translate("Qwerty_main", "TextLabel"))
-        self.label_6.setText(_translate("Qwerty_main", "Пользователь"))
-        self.label_7.setText(_translate("Qwerty_main", "Пароль"))
-        self.password.setText(_translate("Qwerty_main", "TextLabel"))
-        self.label_8.setText(_translate("Qwerty_main", "Сайт"))
-        self.no_item_choosen.setText(_translate("Qwerty_main", "Элемент не выбран"))
-        self.title.setText(_translate("Qwerty_main", "TextLabel"))
-        self.pushButton.setText(_translate("Qwerty_main", "Создать пароль"))
+        Qwerty123.setWindowTitle(_translate("Qwerty123", "MainWindow"))
+        self.use_pass_btn.setText(_translate("Qwerty123", "Использовать пароль"))
+        self.label_3.setText(_translate("Qwerty123", "Qwerty123 под защитой"))
+        self.label_2.setText(_translate("Qwerty123", "Qwerty123 под защитой"))
+        self.input_pass_1.setPlaceholderText(_translate("Qwerty123", "пароль..."))

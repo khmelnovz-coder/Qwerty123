@@ -18,9 +18,6 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
 
         self.load_accounts()
 
-
-
-
     def load_accounts(self):
         self.listWidget.clear()
 
@@ -32,7 +29,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
             self.website.setText("")
             self.password.setText("")
             self.user.setText("")
-            accounts = self.db.get_all_accounts()
+            # self.pushButton.clicked(self.create_pass)
             accounts = self.db.get_all_accounts()
             for acc in accounts:
                 service_name = acc[1]
@@ -54,8 +51,5 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.password.setText(decrypted_pass)
         self.website.setText(service_name)
 
-
-
-
-
-
+    def create_pass(self):
+        pass
