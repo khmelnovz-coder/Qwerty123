@@ -31,9 +31,12 @@ class DatabaseManager:
                                 login
                                 TEXT,
                                 password
+                                TEXT,
+                                website
                                 TEXT
                             )
                             ''')
+
         self.conn.commit()
 
     def save_master_password(self, salt, ciphertext):
@@ -48,10 +51,10 @@ class DatabaseManager:
         self.cursor.execute('SELECT id, service, login, password FROM accounts')
         return self.cursor.fetchall()
 
-    def add_account(self, service, login, encrypted_password):
+    def add_account(self, service, login, encrypted_password, website):
         self.cursor.execute(
-            'INSERT INTO accounts (service, login, password) VALUES (?, ?, ?)',
-            (service, login, encrypted_password)
+            'INSERT INTO accounts (service, login, password, website) VALUES (?, ?, ?, ?)',
+            (service, login, encrypted_password, website)
         )
         self.conn.commit()
 

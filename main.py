@@ -27,9 +27,6 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
         else:
             self.is_registration = False
 
-
-
-
     def change_page_smooth(self, target_index):
         self.opacity_effect = QGraphicsOpacityEffect(self.stackedWidget)
         self.stackedWidget.setGraphicsEffect(self.opacity_effect)
@@ -48,12 +45,8 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
             self.animation_in.setEndValue(1.0)
             self.animation_in.start()
 
-
-
-
         self.animation_out.finished.connect(on_fade_out_finished)
         self.animation_out.start()
-
 
     def use_pass(self):
         self.change_page_smooth(1)
@@ -82,9 +75,7 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
         else:
 
             url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-
             webbrowser.open(url)
-
 
 
 if __name__ == "__main__":
