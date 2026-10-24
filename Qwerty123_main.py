@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidgetItem
 from ui.Qwerty_main_frontend import Ui_Qwerty_main
 from database import DatabaseManager
 from password import SecurityManager
+from add_pass_bk import Add_pass
 
 
 class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
@@ -15,6 +16,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.setupUi(self)
         self.listWidget.itemClicked.connect(self.display_account_details)
         self.no_item = True
+        self.cr_new_pass.clicked.connect(self.create_pass)
 
         self.load_accounts()
 
@@ -29,7 +31,6 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
             self.website.setText("")
             self.password.setText("")
             self.user.setText("")
-            # self.pushButton.clicked(self.create_pass)
             accounts = self.db.get_all_accounts()
             for acc in accounts:
                 service_name = acc[1]
@@ -52,4 +53,5 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.website.setText(service_name)
 
     def create_pass(self):
-        pass
+        self.add_pass = Add_pass()
+        self.add_pass.show()
