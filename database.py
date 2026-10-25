@@ -9,6 +9,21 @@ class DatabaseManager:
 
     def create_tables(self):
         self.cursor.execute('''
+                            CREATE TABLE IF NOT EXISTS categories
+                            (
+                                id
+                                INTEGER
+                                PRIMARY
+                                KEY
+                                AUTOINCREMENT,
+                                name
+                                TEXT
+                                NOT
+                                NULL
+                            )
+                            ''')
+
+        self.cursor.execute('''
                             CREATE TABLE IF NOT EXISTS master
                             (
                                 salt
@@ -26,16 +41,37 @@ class DatabaseManager:
                                 PRIMARY
                                 KEY
                                 AUTOINCREMENT,
-                                service
+                                service_name
                                 TEXT,
                                 login
                                 TEXT,
-                                password
+                                encrypted_pass
                                 TEXT,
-                                website
-                                TEXT
+                                category_id
+                                INTEGER
+                                DEFAULT
+                                1,
+                                FOREIGN
+                                KEY
+                            (
+                                category_id
+                            ) REFERENCES categories
+                            (
+                                id
                             )
+                                )
                             ''')
+        default_categories = [
+            (1, "Личные"),
+            (2, "Работа"),
+            (3, "Соцсети"),
+            (4, "Другие")
+        ]
+        for cat_id, cat_name in default_categories:
+            self.cursor.execute('''
+                                INSERT
+                                OR IGNORE INTO categories (id, name) VALUES (?, ?)
+                                ''', (cat_id, cat_name))
 
         self.conn.commit()
 
