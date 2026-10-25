@@ -1,15 +1,17 @@
 import sys
-from PyQt6.QtWidgets import QMainWindow, QListWidgetItem, QLineEdit, QMessageBox, QApplication
+from PyQt6.QtWidgets import QMainWindow, QListWidgetItem, QLineEdit, QMessageBox, QApplication, QInputDialog
 from PyQt6.QtCore import QEvent
 from ui.Add_password_frontend import Ui_Add_password
 from password import SecurityManager
 from database import DatabaseManager
 import random
 import sqlite3
+from PyQt6 import QtCore, QtWidgets
+
 
 
 class Add_pass(QMainWindow, Ui_Add_password):
-    def __init__(self, security_manager, database_manager):
+    def __init__(self, security_manager, database_manager, on_account_added=None):
         super().__init__()
         self.setupUi(self)
         self.cancel.clicked.connect(self.cancel_new)
@@ -25,7 +27,15 @@ class Add_pass(QMainWindow, Ui_Add_password):
         self.level_1.toggled.connect(self.cr_new_pass_def)
         self.level_2.toggled.connect(self.cr_new_pass_def)
         self.level_3.toggled.connect(self.cr_new_pass_def)
+        self.load_categories()
+        self.on_account_added = on_account_added
 
+        self.cancel.clicked.connect(self.cancel_new)
+        self.save_new_pass.clicked.connect(self.save_new_pass_def)
+
+
+
+        self.pass_add.setText(self.sec.generate_pass(self.current_level))
         if self.n == 0:
             self.login_add.setPlaceholderText("example@gmail.com")
             self.site_add.setPlaceholderText("google.com")
@@ -66,6 +76,13 @@ class Add_pass(QMainWindow, Ui_Add_password):
 
             self.pass_add.setText(str(self.sec.generate_pass(current_level)))
 
+    def load_categories(self):
+        self.categories.clear()
+        all_categories = self.db.get_all_categories()
+
+        for cat_id, cat_name in all_categories:
+            self.categories.addItem(cat_name, cat_id)
+
     def save_new_pass_def(self):
         good_password = True
         if not self.title_add.text():
@@ -98,14 +115,41 @@ class Add_pass(QMainWindow, Ui_Add_password):
         else:
             if "@" in self.login_add.text():
                 pass
+            category_id = self.categories.currentData(QtCore.Qt.ItemDataRole.UserRole)
             salt, _ = self.db.get_master_password()
-            con = sqlite3.connect("qwerty.db")
-            cur = con.cursor()
             service = self.title_add.text()
             login = self.login_add.text()
             password = self.sec.encode(self.pass_add.text(), salt=salt)
             website = self.site_add.text()
-            self.db.add_account(service, login, password, website)
-            con.commit()
-            con.close()
+            self.db.add_account(service, login, password, website, category_id)
+            if self.on_account_added:
+                self.on_account_added()
+
             self.close()
+
+    def load_categories(self):
+        self.categories.clear()
+        all_categories = self.db.get_all_categories()
+
+        for cat_id, cat_name in all_categories:
+            self.categories.addItem(cat_name, cat_id)
+
+        self.categories.addItem("➕ Добавить категорию...", -999)
+
+    def handle_category_selection(self, index):
+        data = self.categories.currentData(QtCore.Qt.ItemDataRole.UserRole)
+
+        if data == -999:
+            text, ok = QtWidgets.QInputDialog.getText(
+                self, "Новая категория", "Введите название новой категории:"
+            )
+
+            if ok and text.strip():
+                new_cat_id = self.db.add_category(text.strip())
+                self.load_categories()
+
+                idx = self.categories.findData(new_cat_id)
+                if idx != -1:
+                    self.categories.setCurrentIndex(idx)
+            else:
+                self.categories.setCurrentIndex(0)

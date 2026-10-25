@@ -50,7 +50,7 @@ class Ui_Qwerty_main(object):
             }
             /* Кнопка создания пароля в сайдбаре */
             QPushButton#cr_new_pass {
-                background-color: #0a84ff;
+                background-color: #998584;
                 color: white;
                 border: none;
                 border-radius: 8px;

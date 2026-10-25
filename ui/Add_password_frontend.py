@@ -12,170 +12,170 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Add_password(object):
     def setupUi(self, Add_password):
         Add_password.setObjectName("Add_password")
-        Add_password.resize(700, 360)
+        Add_password.resize(659, 340)
 
-        # Стиль macOS / Apple Passwords (темная тема для окна добавления)
+        # Применяем общую темную macOS-тему к окну
         Add_password.setStyleSheet("""
             QMainWindow {
-                background-color: #1e1e20;
+                background-color: #1e1e1e;
             }
-            QWidget {
-                background-color: #1e1e20;
+            QLabel {
                 color: #f2f2f7;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
                 font-size: 13px;
+                font-family: "Helvetica Neue", Arial, sans-serif;
             }
             QLineEdit {
                 background-color: #2c2c2e;
+                color: #ffffff;
                 border: 1px solid #3a3a3c;
-                border-radius: 8px;
-                padding: 10px 14px;
-                color: #f2f2f7;
+                border-radius: 6px;
+                padding: 6px 10px;
                 font-size: 13px;
             }
             QLineEdit:focus {
                 border: 1px solid #0a84ff;
             }
-            QLabel {
-                color: #8e8e93;
-                font-weight: 600;
-                font-size: 13px;
-            }
-            QPushButton#save_new_pass {
-                background-color: #0a84ff;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                padding: 10px 20px;
-                font-weight: 600;
-                font-size: 13px;
-            }
-            QPushButton#save_new_pass:hover {
-                background-color: #0071e3;
-            }
-            QPushButton#save_new_pass:pressed {
-                background-color: #005bb5;
-            }
-            QPushButton#cancel {
+            QComboBox {
                 background-color: #2c2c2e;
+                color: #ffffff;
                 border: 1px solid #3a3a3c;
-                border-radius: 8px;
-                padding: 10px 20px;
-                color: #f2f2f7;
-                font-weight: 600;
+                border-radius: 6px;
+                padding: 6px 10px;
                 font-size: 13px;
             }
-            QPushButton#cancel:hover {
-                background-color: #3a3a3c;
+            QComboBox::drop-down {
+                subcontrol-origin: padding;
+                subcontrol-position: top right;
+                width: 20px;
+                border-left-width: 0px;
             }
-            QPushButton#cancel:pressed {
+            QComboBox QAbstractItemView {
                 background-color: #2c2c2e;
+                color: #ffffff;
+                selection-background-color: #0a84ff;
+                selection-color: #ffffff;
+                border: 1px solid #3a3a3c;
             }
             QRadioButton {
                 color: #f2f2f7;
+                font-size: 12px;
                 spacing: 8px;
+            }
+            QRadioButton::indicator {
+                width: 14px;
+                height: 14px;
+            }
+            QPushButton {
+                background-color: #2c2c2e;
+                color: #ffffff;
+                border: 1px solid #3a3a3c;
+                border-radius: 6px;
+                padding: 6px 16px;
                 font-size: 13px;
             }
-            QMenuBar {
-                background-color: #1e1e20;
-                color: #8e8e93;
+            QPushButton:hover {
+                background-color: #3a3a3c;
             }
-            QStatusBar {
-                background-color: #1e1e20;
-                color: #8e8e93;
-                border-top: 1px solid #2c2c2e;
+            QPushButton#save_new_pass {
+                background-color: #0a84ff;
+                border: none;
+            }
+            QPushButton#save_new_pass:hover {
+                background-color: #0071e3;
             }
         """)
 
         self.centralwidget = QtWidgets.QWidget(parent=Add_password)
         self.centralwidget.setObjectName("centralwidget")
-
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout.setContentsMargins(30, 30, 30, 30)
-        self.gridLayout.setHorizontalSpacing(16)
-        self.gridLayout.setVerticalSpacing(16)
         self.gridLayout.setObjectName("gridLayout")
-
-        spacerItem = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum,
-                                           QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout.addItem(spacerItem, 7, 1, 1, 2)
-
-        spacerItem1 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum,
-                                            QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout.addItem(spacerItem1, 0, 2, 1, 1)
-
-        self.save_new_pass = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.save_new_pass.setObjectName("save_new_pass")
-        self.gridLayout.addWidget(self.save_new_pass, 7, 4, 1, 1)
-
-        self.login_add = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.login_add.setObjectName("login_add")
-        self.gridLayout.addWidget(self.login_add, 2, 4, 1, 1)
-
-        self.label_2 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_2.setObjectName("label_2")
-        self.gridLayout.addWidget(self.label_2, 4, 0, 1, 1)
-
-        self.pass_add = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.pass_add.setMinimumSize(QtCore.QSize(220, 0))
-        self.pass_add.setObjectName("pass_add")
-        self.gridLayout.addWidget(self.pass_add, 4, 4, 1, 1)
-
-        self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_3.setObjectName("label_3")
-        self.gridLayout.addWidget(self.label_3, 6, 0, 1, 1)
-
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding,
-                                            QtWidgets.QSizePolicy.Policy.Minimum)
-        self.gridLayout.addItem(spacerItem2, 6, 1, 1, 2)
-
-        self.site_add = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.site_add.setObjectName("site_add")
-        self.gridLayout.addWidget(self.site_add, 6, 4, 1, 1)
-
-        self.title_add = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.title_add.setObjectName("title_add")
-        self.gridLayout.addWidget(self.title_add, 1, 1, 1, 4)
-
-        spacerItem3 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Policy.Minimum,
-                                            QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout.addItem(spacerItem3, 3, 1, 1, 1)
-
-        spacerItem4 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Policy.Minimum,
-                                            QtWidgets.QSizePolicy.Policy.Expanding)
-        self.gridLayout.addItem(spacerItem4, 5, 1, 1, 1)
-
-        self.label = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label.setObjectName("label")
-        self.gridLayout.addWidget(self.label, 2, 0, 1, 1)
-
-        spacerItem5 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Expanding,
-                                            QtWidgets.QSizePolicy.Policy.Minimum)
-        self.gridLayout.addItem(spacerItem5, 2, 1, 1, 2)
 
         self.cancel = QtWidgets.QPushButton(parent=self.centralwidget)
         self.cancel.setObjectName("cancel")
-        self.gridLayout.addWidget(self.cancel, 7, 0, 1, 1)
-
-        self.level_1 = QtWidgets.QRadioButton(parent=self.centralwidget)
-        self.level_1.setObjectName("level_1")
-        self.gridLayout.addWidget(self.level_1, 4, 1, 1, 1)
+        self.gridLayout.addWidget(self.cancel, 8, 0, 1, 1)
 
         self.level_2 = QtWidgets.QRadioButton(parent=self.centralwidget)
         self.level_2.setObjectName("level_2")
         self.gridLayout.addWidget(self.level_2, 4, 2, 1, 1)
 
+        self.pass_add = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.pass_add.setMinimumSize(QtCore.QSize(200, 0))
+        self.pass_add.setObjectName("pass_add")
+        self.gridLayout.addWidget(self.pass_add, 4, 4, 1, 1)
+
+        self.title_add = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.title_add.setObjectName("title_add")
+        self.gridLayout.addWidget(self.title_add, 1, 1, 1, 2)
+
+        self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_3.setObjectName("label_3")
+        self.gridLayout.addWidget(self.label_3, 6, 0, 1, 1)
+
+        self.site_add = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.site_add.setObjectName("site_add")
+        self.gridLayout.addWidget(self.site_add, 6, 4, 1, 1)
+
+        self.label = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 2, 0, 1, 1)
+
         self.level_3 = QtWidgets.QRadioButton(parent=self.centralwidget)
         self.level_3.setObjectName("level_3")
         self.gridLayout.addWidget(self.level_3, 4, 3, 1, 1)
 
-        Add_password.setCentralWidget(self.centralwidget)
+        spacerItem = QtWidgets.QSpacerItem(66, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                           QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout.addItem(spacerItem, 2, 1, 1, 2)
 
+        spacerItem1 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum,
+                                            QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout.addItem(spacerItem1, 8, 1, 1, 2)
+
+        self.login_add = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.login_add.setObjectName("login_add")
+        self.gridLayout.addWidget(self.login_add, 2, 4, 1, 1)
+
+        spacerItem2 = QtWidgets.QSpacerItem(99, 20, QtWidgets.QSizePolicy.Policy.Expanding,
+                                            QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout.addItem(spacerItem2, 6, 1, 1, 2)
+
+        spacerItem3 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum,
+                                            QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout.addItem(spacerItem3, 5, 1, 1, 1)
+
+        self.label_2 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_2.setObjectName("label_2")
+        self.gridLayout.addWidget(self.label_2, 4, 0, 1, 1)
+
+        spacerItem4 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum,
+                                            QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout.addItem(spacerItem4, 3, 1, 1, 1)
+
+        self.level_1 = QtWidgets.QRadioButton(parent=self.centralwidget)
+        self.level_1.setObjectName("level_1")
+        self.gridLayout.addWidget(self.level_1, 4, 1, 1, 1)
+
+        spacerItem5 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum,
+                                            QtWidgets.QSizePolicy.Policy.Expanding)
+        self.gridLayout.addItem(spacerItem5, 0, 2, 1, 1)
+
+        self.save_new_pass = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.save_new_pass.setObjectName("save_new_pass")
+        self.gridLayout.addWidget(self.save_new_pass, 8, 4, 1, 1)
+
+        self.categories = QtWidgets.QComboBox(parent=self.centralwidget)
+        self.categories.setObjectName("categories")
+        self.gridLayout.addWidget(self.categories, 7, 4, 1, 1)
+
+        self.label_4 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_4.setObjectName("label_4")
+        self.gridLayout.addWidget(self.label_4, 7, 0, 1, 1)
+
+        Add_password.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=Add_password)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 700, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 659, 24))
         self.menubar.setObjectName("menubar")
         Add_password.setMenuBar(self.menubar)
-
         self.statusbar = QtWidgets.QStatusBar(parent=Add_password)
         self.statusbar.setObjectName("statusbar")
         Add_password.setStatusBar(self.statusbar)
@@ -185,13 +185,14 @@ class Ui_Add_password(object):
 
     def retranslateUi(self, Add_password):
         _translate = QtCore.QCoreApplication.translate
-        Add_password.setWindowTitle(_translate("Add_password", "Создание нового пароля"))
-        self.save_new_pass.setText(_translate("Add_password", "Сохранить"))
-        self.label_2.setText(_translate("Add_password", "Пароль"))
-        self.label_3.setText(_translate("Add_password", "Сайт"))
-        self.title_add.setPlaceholderText(_translate("Add_password", "Название"))
-        self.label.setText(_translate("Add_password", "Логин"))
+        Add_password.setWindowTitle(_translate("Add_password", "Новый пароль"))
         self.cancel.setText(_translate("Add_password", "Отменить"))
-        self.level_1.setText(_translate("Add_password", "Надежный"))
         self.level_2.setText(_translate("Add_password", "Стандартный"))
+        self.title_add.setPlaceholderText(_translate("Add_password", "Название"))
+        self.label_3.setText(_translate("Add_password", "Сайт"))
+        self.label.setText(_translate("Add_password", "Логин"))
         self.level_3.setText(_translate("Add_password", "Простой"))
+        self.label_2.setText(_translate("Add_password", "Пароль"))
+        self.level_1.setText(_translate("Add_password", "Надежный"))
+        self.save_new_pass.setText(_translate("Add_password", "Сохранить"))
+        self.label_4.setText(_translate("Add_password", "Категория"))

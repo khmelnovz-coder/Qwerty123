@@ -47,6 +47,8 @@ class DatabaseManager:
                                 TEXT,
                                 encrypted_pass
                                 TEXT,
+                                website
+                                TEXT,
                                 category_id
                                 INTEGER
                                 DEFAULT
@@ -75,24 +77,34 @@ class DatabaseManager:
 
         self.conn.commit()
 
+    def get_all_categories(self):
+        self.cursor.execute("SELECT id, name FROM categories")
+        return self.cursor.fetchall()
+
     def save_master_password(self, salt, ciphertext):
         self.cursor.execute('DELETE FROM master')
         self.cursor.execute('INSERT INTO master (salt, ciphertext) VALUES (?, ?)', (salt, ciphertext))
         self.conn.commit()
 
+    def add_category(self, name):
+        self.cursor.execute('INSERT INTO categories (name) VALUES (?)', (name,))
+        self.conn.commit()
+        return self.cursor.lastrowid
+
     def close(self):
         self.conn.close()
 
     def get_all_accounts(self):
-        self.cursor.execute('SELECT id, service, login, password FROM accounts')
+        self.cursor.execute('SELECT id, service_name, login, encrypted_pass, website, category_id FROM accounts')
         return self.cursor.fetchall()
 
-    def add_account(self, service, login, encrypted_password, website):
-        self.cursor.execute(
-            'INSERT INTO accounts (service, login, password, website) VALUES (?, ?, ?, ?)',
-            (service, login, encrypted_password, website)
-        )
+    def add_account(self, service_name, login, encrypted_pass, website, category_id=1):
+        self.cursor.execute('''
+            INSERT INTO accounts (service_name, login, encrypted_pass, website, category_id)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (service_name, login, encrypted_pass, website, category_id))
         self.conn.commit()
+
 
     def get_master_password(self):
         self.cursor.execute('SELECT salt, ciphertext FROM master')

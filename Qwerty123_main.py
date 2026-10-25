@@ -54,9 +54,14 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.website.setText(service_name)
         self.show_details()
 
+    def load_updated_accounts(self):
+        self.accounts = self.db.get_all_accounts()
+        self.load_accounts()
+
     def create_pass(self):
-        self.add_pass = Add_pass(self.sec, self.db)
+        self.add_pass = Add_pass(self.sec, self.db, on_account_added=self.load_updated_accounts)
         self.add_pass.show()
+
 
     def hide_details(self):
         self.title.hide()
