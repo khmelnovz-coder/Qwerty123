@@ -9,7 +9,7 @@ import sqlite3
 
 
 class Add_pass(QMainWindow, Ui_Add_password):
-    def __init__(self, security_manager):
+    def __init__(self, security_manager, database_manager):
         super().__init__()
         self.setupUi(self)
         self.cancel.clicked.connect(self.cancel_new)
@@ -17,7 +17,7 @@ class Add_pass(QMainWindow, Ui_Add_password):
         self.level_1.setChecked(True)
         self.current_level = 1 if self.level_1.isChecked() else (2 if self.level_2.isChecked() else 3)
         self.sec = security_manager
-        self.db = DatabaseManager()
+        self.db = database_manager
         self.pass_add.setText(self.sec.generate_pass(self.current_level))
         self.pass_add.setEchoMode(QLineEdit.EchoMode.Password)
         self.pass_add.installEventFilter(self)
@@ -105,13 +105,7 @@ class Add_pass(QMainWindow, Ui_Add_password):
             login = self.login_add.text()
             password = self.sec.encode(self.pass_add.text(), salt=salt)
             website = self.site_add.text()
-            cur.execute(
-                """
-                INSERT INTO accounts (service, login, password, website)
-                VALUES (?, ?, ?, ?)
-                """,
-                (service, login, password, website)
-            )
+            self.db.add_account(service, login, password, website)
             con.commit()
             con.close()
             self.close()
