@@ -55,7 +55,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.show_details()
 
     def create_pass(self):
-        self.add_pass = Add_pass(self.sec)
+        self.add_pass = Add_pass(self.sec, self.db)
         self.add_pass.show()
 
     def hide_details(self):
@@ -79,7 +79,6 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.no_item_choosen.hide()
 
     def eventFilter(self, obj, event):
-        # 1. Логика для пароля (показ при наведении + копирование по клику)
         if obj == self.password:
             if event.type() == QtCore.QEvent.Type.Enter:
                 self.password.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
@@ -91,7 +90,6 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
                     QApplication.clipboard().setText(text)
                     self.statusbar.showMessage("Пароль скопирован в буфер обмена!", 3000)
 
-        # 2. Логика для логина (копирование по клику)
         elif obj == self.user:
             if event.type() == QtCore.QEvent.Type.MouseButtonPress:
                 text = self.user.text()
@@ -99,7 +97,6 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
                     QApplication.clipboard().setText(text)
                     self.statusbar.showMessage("Логин скопирован в буфер обмена!", 3000)
 
-        # 3. Логика для сайта (копирование по клику)
         elif obj == self.website:
             if event.type() == QtCore.QEvent.Type.MouseButtonPress:
                 text = self.website.text()
