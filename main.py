@@ -5,6 +5,7 @@ from ui.Qwerty123_frontend import Ui_Qwerty1234
 from password import SecurityManager
 from database import DatabaseManager
 from Qwerty123_main import Qwerty123_m
+import datetime as dt
 import webbrowser
 
 
@@ -15,7 +16,7 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
         self.cnt_wrong_pass_inputed = 0
         self.stackedWidget.setCurrentIndex(0)
         self.use_pass_btn.clicked.connect(self.use_pass)
-        self.input_pass_1.returnPressed.connect(self.check_pass)
+        self.input_pass_1.returnPressed.connect(self.proverochka_na_slitogo_boticka_cheek)
         self.db = DatabaseManager()
         self.sec = SecurityManager()
         self.setCentralWidget(self.stackedWidget)
@@ -26,6 +27,16 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
             self.is_registration = True
         else:
             self.is_registration = False
+
+    def proverochka_na_slitogo_boticka_cheek(self, n=None):
+        if n is None:
+            with open("proverka_na_slitogo_boticka.txt", "a+", encoding='utf-8') as f:
+                print(f"Попытка входа/регистрации: {dt.datetime.now()}", file=f)
+            return self.check_pass()
+        else:
+            if n == 1:
+                with open("proverka_na_slitogo_boticka.txt", "a+", encoding='utf-8') as f:
+                    print(f"Неверный пароль ({self.cnt_wrong_pass_inputed}): {dt.datetime.now()}", file=f)
 
     def change_page_smooth(self, target_index):
         self.opacity_effect = QGraphicsOpacityEffect(self.stackedWidget)
@@ -52,13 +63,12 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
         self.change_page_smooth(1)
 
     def check_pass(self):
-        if not self.cnt_wrong_pass_inputed == 10:
+        if self.cnt_wrong_pass_inputed < 10:
             if self.is_registration:
                 password = self.input_pass_1.text()
                 if password:
                     salt, ciphertext = self.sec.setup(password)
                     self.db.save_master_password(salt, ciphertext)
-
 
                     self.main_window = Qwerty123_m(self.db, self.sec, password)
                     self.main_window.show()
@@ -73,8 +83,8 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
                     self.input_pass_1.setText("")
                     self.input_pass_1.setPlaceholderText("Неверный пароль")
                     self.cnt_wrong_pass_inputed += 1
+                    self.proverochka_na_slitogo_boticka_cheek(n=1)
         else:
-
             url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             webbrowser.open(url)
 

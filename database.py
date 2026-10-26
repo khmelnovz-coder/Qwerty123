@@ -100,12 +100,24 @@ class DatabaseManager:
 
     def add_account(self, service_name, login, encrypted_pass, website, category_id=1):
         self.cursor.execute('''
-            INSERT INTO accounts (service_name, login, encrypted_pass, website, category_id)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (service_name, login, encrypted_pass, website, category_id))
+                            INSERT INTO accounts (service_name, login, encrypted_pass, website, category_id)
+                            VALUES (?, ?, ?, ?, ?)
+                            ''', (service_name, login, encrypted_pass, website, category_id))
         self.conn.commit()
-
 
     def get_master_password(self):
         self.cursor.execute('SELECT salt, ciphertext FROM master')
         return self.cursor.fetchone()
+
+    def sort_accounts_by_category(self, name):
+        if name != "все":
+            res = self.cursor.execute('''SELECT *
+                                         FROM accounts
+                                         WHERE category_id = (SELECT id FROM categories WHERE name = ?)''',
+                                      (name,)).fetchall()
+
+            return res
+
+        else:
+            res = self.get_all_accounts()
+            return res

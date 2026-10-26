@@ -1,4 +1,4 @@
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtWidgets, QtGui
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidgetItem
 from ui.Qwerty_main_frontend import Ui_Qwerty_main
@@ -16,19 +16,38 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.setupUi(self)
         self.listWidget.itemClicked.connect(self.display_account_details)
         self.no_item = True
+
         self.accounts = self.db.get_all_accounts()
         self.cr_new_pass.clicked.connect(self.create_pass)
         self.hide_details()
-        self.load_accounts()
+
         self.password.setReadOnly(True)
         self.password.setMouseTracking(True)
         self.password.installEventFilter(self)
         self.password.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+
+        menubar = self.menuBar()
+        view_menu = menubar.addMenu("Вид")
+
+        self.sort_menu = QtWidgets.QMenu("Сортировать по категориям", self)
+
+        reset_action = self.sort_menu.addAction("Все категории")
+        reset_action.triggered.connect(self.reset_category_filter)
+        self.sort_menu.addSeparator()
+
+        for i in self.db.get_all_categories():
+            category_name = str(i[1])
+            action = self.sort_menu.addAction(category_name)
+            action.triggered.connect(lambda checked, name=category_name: self.sort_accounts_by_category(name))
+
+        view_menu.addMenu(self.sort_menu)
+
         for field in (self.user, self.password, self.website):
             field.setReadOnly(True)
             field.setMouseTracking(True)
             field.installEventFilter(self)
 
+        # Единый финальный вызов загрузки списка при старте
         self.load_accounts()
 
     def load_accounts(self):
@@ -62,7 +81,6 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.add_pass = Add_pass(self.sec, self.db, on_account_added=self.load_updated_accounts)
         self.add_pass.show()
 
-
     def hide_details(self):
         self.title.hide()
         self.user.hide()
@@ -82,6 +100,15 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.label_7.show()
         self.label_8.show()
         self.no_item_choosen.hide()
+
+    def sort_accounts_by_category(self, name):
+        # Обновляем self.accounts отфильтрованными данными, чтобы состояние приложения не расходилось
+        self.accounts = self.db.sort_accounts_by_category(name)
+        self.load_accounts()
+
+    def reset_category_filter(self):
+        self.accounts = self.db.get_all_accounts()
+        self.load_accounts()
 
     def eventFilter(self, obj, event):
         if obj == self.password:
