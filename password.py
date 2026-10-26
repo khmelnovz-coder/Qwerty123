@@ -103,7 +103,6 @@ class SecurityManager:
         return f.decrypt(password_sql).decode()
 
     def encode(self, password_sql, salt):
-        print(self.key)
         if not self.key:
             raise ValueError("Ключ шифрования не задан!")
         f = Fernet(self.key)
