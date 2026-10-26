@@ -102,7 +102,6 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.no_item_choosen.hide()
 
     def sort_accounts_by_category(self, name):
-        # Обновляем self.accounts отфильтрованными данными, чтобы состояние приложения не расходилось
         self.accounts = self.db.sort_accounts_by_category(name)
         self.load_accounts()
 
