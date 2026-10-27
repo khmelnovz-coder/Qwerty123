@@ -136,3 +136,16 @@ class DatabaseManager:
         except sqlite3.Error as e:
             QMessageBox.warning(None, "Ошибка", f"Ошибка чтения данных: {e}")
             return []
+
+    def sort_accounts_by_category(self, name):
+        if name != "все":
+            res = self.cursor.execute('''SELECT *
+                                         FROM accounts
+                                         WHERE category_id = (SELECT id FROM categories WHERE name = ?)''',
+                                      (name,)).fetchall()
+
+            return res
+
+        else:
+            res = self.get_all_accounts()
+            return res

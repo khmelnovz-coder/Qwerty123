@@ -2,7 +2,6 @@ from PyQt6 import QtCore, QtWidgets, QtGui
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidgetItem
 from ui.Qwerty_main_frontend import Ui_Qwerty_main
-from database import DatabaseManager
 from password import SecurityManager
 from add_pass_bk import Add_pass
 
@@ -20,15 +19,22 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.accounts = self.db.get_all_accounts()
         self.cr_new_pass.clicked.connect(self.create_pass)
         self.hide_details()
-
+        self.menubar = self.menuBar()
         self.password.setReadOnly(True)
         self.password.setMouseTracking(True)
         self.password.installEventFilter(self)
         self.password.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+        self.update_load_catigories()
+        self.init_category_menu()
+        for field in (self.user, self.password, self.website):
+            field.setReadOnly(True)
+            field.setMouseTracking(True)
+            field.installEventFilter(self)
+        self.load_accounts()
 
-        menubar = self.menuBar()
-        view_menu = menubar.addMenu("Вид")
 
+    def init_category_menu(self):
+        self.view_menu = self.menubar.addMenu("Вид")
         self.sort_menu = QtWidgets.QMenu("Сортировать по категориям", self)
 
         reset_action = self.sort_menu.addAction("Все категории")
@@ -40,16 +46,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
             action = self.sort_menu.addAction(category_name)
             action.triggered.connect(lambda checked, name=category_name: self.sort_accounts_by_category(name))
 
-        view_menu.addMenu(self.sort_menu)
-
-        for field in (self.user, self.password, self.website):
-            field.setReadOnly(True)
-            field.setMouseTracking(True)
-            field.installEventFilter(self)
-
-        # Единый финальный вызов загрузки списка при старте
-        self.load_accounts()
-
+        self.view_menu.addMenu(self.sort_menu)
     def load_accounts(self):
         self.listWidget.clear()
         for acc in self.accounts:
@@ -65,12 +62,13 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         login = acc_data[2]
         encrypted_pass = acc_data[3]
         decrypted_pass = self.sec.decoding(encrypted_pass, self.master_key)
+        website = acc_data[4] if len(acc_data) > 4 else ""
         self.no_item = False
         self.no_item_choosen.hide()
         self.title.setText(service_name)
         self.user.setText(login)
         self.password.setText(decrypted_pass)
-        self.website.setText(service_name)
+        self.website.setText(website)
         self.show_details()
 
     def load_updated_accounts(self):
@@ -78,8 +76,23 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.load_accounts()
 
     def create_pass(self):
-        self.add_pass = Add_pass(self.sec, self.db, on_account_added=self.load_updated_accounts)
+        self.add_pass = Add_pass(
+            self.sec,
+            self.db,
+            on_account_added=self.load_updated_accounts,
+            on_category_added=self.init_category_menu
+        )
         self.add_pass.show()
+
+    def update_load_catigories(self):
+
+        self.view_menu = self.menubar.addMenu("Вид")
+
+        self.sort_menu = QtWidgets.QMenu("Сортировать по категориям", self)
+
+        reset_action = self.sort_menu.addAction("Все категории")
+        reset_action.triggered.connect(self.reset_category_filter)
+        self.sort_menu.addSeparator()
 
     def hide_details(self):
         self.title.hide()

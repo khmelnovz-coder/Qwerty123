@@ -6,12 +6,13 @@ from ui.Add_password_frontend import Ui_Add_password
 
 
 class Add_pass(QMainWindow, Ui_Add_password):
-    def __init__(self, security_manager, database_manager, on_account_added=None):
+    def __init__(self, security_manager, database_manager, on_account_added=None, on_category_added=None):
         super().__init__()
         self.setupUi(self)
         self.sec = security_manager
         self.db = database_manager
         self.on_account_added = on_account_added
+        self.on_category_added = on_category_added
 
         self.cancel.clicked.connect(self.cancel_new)
         self.save_new_pass.clicked.connect(self.save_new_pass_def)
@@ -89,6 +90,9 @@ class Add_pass(QMainWindow, Ui_Add_password):
             if ok and text.strip():
                 new_cat_id = self.db.add_category(text.strip())
                 self.load_categories()
+
+                if self.on_category_added:
+                    self.on_category_added()
 
                 idx = self.categories.findData(new_cat_id)
                 if idx != -1:
