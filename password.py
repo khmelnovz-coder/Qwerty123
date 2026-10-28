@@ -130,8 +130,8 @@ class SecurityManager:
 
         if level == 3:
             f = ''
+            rand = random.randint(0, 1)
             for _ in range(8):
-                rand = random.randint(0, 1)
                 if rand == 1:
                     f += random.choice(self.digits)
                 else:
