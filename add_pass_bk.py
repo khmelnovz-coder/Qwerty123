@@ -105,7 +105,7 @@ class Add_pass(QMainWindow, Ui_Add_password):
         if self.title_add.text().strip() != "":
             good_password = False
 
-        fields = [self.title_add, self.login_add, self.site_add, self.pass_add]
+        fields = [self.title_add, self.login_add, self.pass_add]
         for field in fields:
             if not field.text():
                 good_password = False
