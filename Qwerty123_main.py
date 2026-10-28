@@ -24,7 +24,6 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.password.setMouseTracking(True)
         self.password.installEventFilter(self)
         self.password.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
-        self.update_load_catigories()
         self.init_category_menu()
         for field in (self.user, self.password, self.website):
             field.setReadOnly(True)
@@ -63,12 +62,18 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         encrypted_pass = acc_data[3]
         decrypted_pass = self.sec.decoding(encrypted_pass, self.master_key)
         website = acc_data[4] if len(acc_data) > 4 else ""
+        cat_id = acc_data[5] if len(acc_data) > 5 else 1
+
+        self.db.cursor.execute("SELECT name FROM categories WHERE id = ?", (cat_id,))
+        cat_result = self.db.cursor.fetchone()
+        category_name = cat_result[0] if cat_result else "Без категории"
         self.no_item = False
         self.no_item_choosen.hide()
         self.title.setText(service_name)
         self.user.setText(login)
         self.password.setText(decrypted_pass)
         self.website.setText(website)
+        self.current_categoriya.setText(category_name)
         self.show_details()
 
     def load_updated_accounts(self):
@@ -103,6 +108,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.label_7.hide()
         self.label_8.hide()
         self.no_item_choosen.show()
+        self.current_categoriya.hide()
 
     def show_details(self):
         self.title.show()
@@ -113,6 +119,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.label_7.show()
         self.label_8.show()
         self.no_item_choosen.hide()
+        self.current_categoriya.show()
 
     def sort_accounts_by_category(self, name):
         self.accounts = self.db.sort_accounts_by_category(name)
