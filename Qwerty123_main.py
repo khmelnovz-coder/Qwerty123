@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidgetItem
 from ui.Qwerty_main_frontend import Ui_Qwerty_main
 from password import SecurityManager
 from add_pass_bk import Add_pass
+from resave_pass_bk import ResavePassWindow
 
 
 class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
@@ -15,6 +16,8 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.setupUi(self)
         self.listWidget.itemClicked.connect(self.display_account_details)
         self.no_item = True
+        self.update_button.clicked.connect(self.open_resave_window)
+        self.delete_pass.clicked.connect(self.delete_pass_dialog)
 
         self.accounts = self.db.get_all_accounts()
         self.cr_new_pass.clicked.connect(self.create_pass)
@@ -31,7 +34,6 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
             field.installEventFilter(self)
         self.load_accounts()
 
-
     def init_category_menu(self):
         self.view_menu = self.menubar.addMenu("Вид")
         self.sort_menu = QtWidgets.QMenu("Сортировать по категориям", self)
@@ -46,6 +48,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
             action.triggered.connect(lambda checked, name=category_name: self.sort_accounts_by_category(name))
 
         self.view_menu.addMenu(self.sort_menu)
+
     def load_accounts(self):
         self.listWidget.clear()
         for acc in self.accounts:
@@ -108,6 +111,8 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.label_7.hide()
         self.label_8.hide()
         self.no_item_choosen.show()
+        self.delete_pass.hide()
+        self.update_button.hide()
         self.current_categoriya.hide()
 
     def show_details(self):
@@ -119,6 +124,8 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.label_7.show()
         self.label_8.show()
         self.no_item_choosen.hide()
+        self.delete_pass.show()
+        self.update_button.show()
         self.current_categoriya.show()
 
     def sort_accounts_by_category(self, name):
@@ -156,3 +163,48 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
                     self.statusbar.showMessage("Сайт скопирован в буфер обмена!", 3000)
 
         return super().eventFilter(obj, event)
+
+    def open_resave_window(self):
+        selected_item = self.listWidget.currentItem()
+        if not selected_item:
+            self.statusbar.showMessage("Сначала выберите элемент для изменения!", 3000)
+            return
+
+        acc_data = selected_item.data(QtCore.Qt.ItemDataRole.UserRole)
+        if not acc_data:
+            return
+
+        self.resave_window = ResavePassWindow(
+            security_manager=self.sec,
+            database_manager=self.db,
+            account_data=acc_data,
+            on_account_updated=self.load_accounts
+        )
+        self.resave_window.show()
+
+    def delete_pass_dialog(self):
+        selected_item = self.listWidget.currentItem()
+        if not selected_item:
+            self.statusbar.showMessage("Сначала выберите элемент для удаления!", 3000)
+            return
+
+        acc_data = selected_item.data(QtCore.Qt.ItemDataRole.UserRole)
+        if not acc_data:
+            return
+
+        acc_id = acc_data[0]
+        service_name = acc_data[1]
+
+        reply = QtWidgets.QMessageBox.question(
+            self,
+            "Подтверждение удаления",
+            f"Вы действительно хотите удалить учетную запись «{service_name}»?",
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No
+        )
+        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
+            self.db.delete_account(acc_id)
+            self.accounts = self.db.get_all_accounts()
+            self.load_accounts()
+            self.hide_details()
+            self.statusbar.showMessage(f"Запись «{service_name}» успешно удалена.", 3000)

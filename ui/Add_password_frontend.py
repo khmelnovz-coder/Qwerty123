@@ -14,7 +14,6 @@ class Ui_Add_password(object):
         Add_password.setObjectName("Add_password")
         Add_password.resize(659, 340)
 
-        # Применяем общую темную macOS-тему к окну
         Add_password.setStyleSheet("""
             QMainWindow {
                 background-color: #1e1e1e;

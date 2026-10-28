@@ -63,6 +63,7 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
         self.change_page_smooth(1)
 
     def check_pass(self):
+
         if self.cnt_wrong_pass_inputed < 10:
             if self.is_registration:
                 password = self.input_pass_1.text()

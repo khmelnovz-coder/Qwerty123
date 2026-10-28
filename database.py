@@ -164,4 +164,10 @@ class DatabaseManager:
             self.conn.commit()
         except sqlite3.Error as e:
             QMessageBox.warning(None, "Ошибка", f"Ошибка обновления данных: {e}")
+    def delete_account(self, acc_id):
+        try:
+            self.cursor.execute("DELETE FROM accounts WHERE id = ?", (acc_id,))
+            self.conn.commit()
+        except Exception as e:
+            print(f"Ошибка при удалении записи: {e}")
 
