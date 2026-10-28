@@ -149,3 +149,19 @@ class DatabaseManager:
         else:
             res = self.get_all_accounts()
             return res
+
+    def resave(self, acc_id, service_name, login, encrypted_pass, website, category_id):
+        try:
+            self.cursor.execute('''
+                                UPDATE accounts
+                                SET service_name   = ?,
+                                    login          = ?,
+                                    encrypted_pass = ?,
+                                    website        = ?,
+                                    category_id    = ?
+                                WHERE id = ?
+                                ''', (service_name, login, encrypted_pass, website, category_id, acc_id))
+            self.conn.commit()
+        except sqlite3.Error as e:
+            QMessageBox.warning(None, "Ошибка", f"Ошибка обновления данных: {e}")
+
