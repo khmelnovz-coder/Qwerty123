@@ -40,6 +40,21 @@ class Add_pass(QMainWindow, Ui_Add_password):
         else:
             self.login_add.setPlaceholderText("typer_666")
             self.site_add.setPlaceholderText("monkeytype.com")
+        self.categories.setStyleSheet("""
+                   QComboBox {
+                       background-color: #2b2b2b;
+                       color: white;
+                       border: 1px solid #555;
+                       border-radius: 4px;
+                       padding: 4px;
+                   }
+                   QComboBox QAbstractItemView {
+                       background-color: #2b2b2b;
+                       color: white;
+                       selection-background-color: #007acc;
+                       selection-color: white;
+                   }
+               """)
 
     def cancel_new(self):
         self.close()

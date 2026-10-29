@@ -27,6 +27,7 @@ class SecurityManager:
     def setup(self, password):
         salt = os.urandom(16)
         key = self.generate_key(password, salt)
+        self.key = key
         f = Fernet(key)
         ciphertext = f.encrypt(b"VALID_MASTER_PASSWORD")
         return salt, ciphertext

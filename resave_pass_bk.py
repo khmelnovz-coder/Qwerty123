@@ -13,6 +13,21 @@ class ResavePassWindow(QMainWindow, Ui_resave_pass):
         self.master_key = master_key
         self.on_account_updated = on_account_updated
         self.on_category_added = on_category_added
+        self.categories.setStyleSheet("""
+                           QComboBox {
+                               background-color: #2b2b2b;
+                               color: white;
+                               border: 1px solid #555;
+                               border-radius: 4px;
+                               padding: 4px;
+                           }
+                           QComboBox QAbstractItemView {
+                               background-color: #2b2b2b;
+                               color: white;
+                               selection-background-color: #007acc;
+                               selection-color: white;
+                           }
+                       """)
 
         self.load_categories_to_combo()
 
