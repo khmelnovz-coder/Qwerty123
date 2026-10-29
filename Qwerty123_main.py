@@ -1,10 +1,11 @@
 from PyQt6 import QtCore, QtWidgets, QtGui
-import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidgetItem
+from PyQt6.QtGui import QShortcut, QKeySequence
 from ui.Qwerty_main_frontend import Ui_Qwerty_main
 from password import SecurityManager
 from add_pass_bk import Add_pass
 from resave_pass_bk import ResavePassWindow
+from floating_panel import FloatingPanel
 
 
 class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
@@ -12,6 +13,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         super().__init__()
         self.db = db_manager
         self.sec = security_manager
+        self.floating_window = None
         self.master_key = master_key
         self.setupUi(self)
         self.listWidget.itemClicked.connect(self.display_account_details)
@@ -33,6 +35,36 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
             field.setMouseTracking(True)
             field.installEventFilter(self)
         self.load_accounts()
+        self.shortcut = QShortcut(QKeySequence("Ctrl+P"), self)
+        self.shortcut.activated.connect(self.toggle_floating_panel)
+
+    def init_category_menu(self):
+        self.view_menu = self.menubar.addMenu("Вид")
+
+        floating_action = self.view_menu.addAction("Плавающая панель (Ctrl+P)")
+        floating_action.triggered.connect(self.toggle_floating_panel)
+        self.view_menu.addSeparator()
+
+        self.sort_menu = QtWidgets.QMenu("Сортировать по категориям", self)
+
+        reset_action = self.sort_menu.addAction("Все категории")
+        reset_action.triggered.connect(self.reset_category_filter)
+        self.sort_menu.addSeparator()
+
+        for i in self.db.get_all_categories():
+            category_name = str(i[1])
+            action = self.sort_menu.addAction(category_name)
+            action.triggered.connect(lambda checked, name=category_name: self.sort_accounts_by_category(name))
+
+        self.view_menu.addMenu(self.sort_menu)
+
+    def toggle_floating_panel(self):
+        if self.floating_window is not None and self.floating_window.isVisible():
+            self.floating_window.close()
+            self.floating_window = None
+        else:
+            self.floating_window = FloatingPanel(self.sec)
+            self.floating_window.show()
 
     def init_category_menu(self):
         self.view_menu = self.menubar.addMenu("Вид")
