@@ -107,3 +107,5 @@ class SecurityManager:
             default_chars.append(secrets.choice(self.lowercase))
         return "".join(default_chars)
 
+
+

@@ -93,9 +93,7 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
         self.add_pass.show()
 
     def update_load_catigories(self):
-
         self.view_menu = self.menubar.addMenu("Вид")
-
         self.sort_menu = QtWidgets.QMenu("Сортировать по категориям", self)
 
         reset_action = self.sort_menu.addAction("Все категории")
@@ -178,7 +176,8 @@ class Qwerty123_m(QMainWindow, Ui_Qwerty_main):
             security_manager=self.sec,
             database_manager=self.db,
             account_data=acc_data,
-            on_account_updated=self.load_accounts
+            master_key=self.master_key,
+            on_account_updated=self.load_updated_accounts
         )
         self.resave_window.show()
 

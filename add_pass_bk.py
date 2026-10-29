@@ -102,7 +102,7 @@ class Add_pass(QMainWindow, Ui_Add_password):
 
     def save_new_pass_def(self):
         good_password = True
-        if self.title_add.text().strip() != "":
+        if self.title_add.text().strip() == "":
             good_password = False
 
         fields = [self.title_add, self.login_add, self.pass_add]
