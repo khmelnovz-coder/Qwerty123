@@ -4,8 +4,6 @@ from PyQt6.QtWidgets import QMessageBox
 
 class DatabaseManager:
     def __init__(self, db_name="qwerty.db"):
-        self.conn = None
-        self.cursor = None
         try:
             self.conn = sqlite3.connect(db_name)
             self.cursor = self.conn.cursor()
@@ -14,9 +12,6 @@ class DatabaseManager:
             QMessageBox.critical(None, "Ошибка базы данных", f"Не удалось подключиться к БД:\n{e}")
 
     def create_tables(self):
-        if not self.cursor:
-            return
-
         self.cursor.execute('''
                             CREATE TABLE IF NOT EXISTS categories
                             (
