@@ -4,6 +4,8 @@ from PyQt6.QtWidgets import QMessageBox
 
 class DatabaseManager:
     def __init__(self, db_name="qwerty.db"):
+        self.conn = None
+        self.cursor = None
         try:
             self.conn = sqlite3.connect(db_name)
             self.cursor = self.conn.cursor()
@@ -12,6 +14,9 @@ class DatabaseManager:
             QMessageBox.critical(None, "Ошибка базы данных", f"Не удалось подключиться к БД:\n{e}")
 
     def create_tables(self):
+        if not self.cursor:
+            return
+
         self.cursor.execute('''
                             CREATE TABLE IF NOT EXISTS categories
                             (
@@ -164,10 +169,10 @@ class DatabaseManager:
             self.conn.commit()
         except sqlite3.Error as e:
             QMessageBox.warning(None, "Ошибка", f"Ошибка обновления данных: {e}")
+
     def delete_account(self, acc_id):
         try:
             self.cursor.execute("DELETE FROM accounts WHERE id = ?", (acc_id,))
             self.conn.commit()
         except Exception as e:
             print(f"Ошибка при удалении записи: {e}")
-
