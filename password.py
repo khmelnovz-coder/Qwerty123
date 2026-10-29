@@ -54,18 +54,56 @@ class SecurityManager:
         return f.encrypt(password_sql.encode())
 
     def generate_pass(self, level=1):
-        if level == 3:
-            if secrets.choice([True, False]):
-                return ''.join(secrets.choice(self.digits) for _ in range(8))
-            else:
-                return ''.join(secrets.choice(self.lowercase) for _ in range(8))
+        if level == 1:
+            alphabet = self.uppercase + self.lowercase + self.digits
+
+            part1 = []
+            for _ in range(6):
+                part1.append(secrets.choice(alphabet))
+            p1 = "".join(part1)
+
+            part2 = []
+            for _ in range(6):
+                part2.append(secrets.choice(alphabet))
+            p2 = "".join(part2)
+
+            part3 = []
+            for _ in range(6):
+                part3.append(secrets.choice(alphabet))
+            p3 = "".join(part3)
+
+            return f"{p1}-{p2}-{p3}"
 
         elif level == 2:
-            alphabet = self.uppercase + self.lowercase + self.digits
-            return ''.join(secrets.choice(alphabet) for _ in range(10))
+            alphabet = self.lowercase + self.digits
 
-        elif level == 1:
-            alphabet = self.uppercase + self.lowercase + self.digits + string.punctuation
-            return ''.join(secrets.choice(alphabet) for _ in range(12))
+            part1 = []
+            for _ in range(6):
+                part1.append(secrets.choice(alphabet))
+            p1 = "".join(part1)
 
-        return ''.join(secrets.choice(self.lowercase) for _ in range(8))
+            part2 = []
+            for _ in range(6):
+                part2.append(secrets.choice(alphabet))
+            p2 = "".join(part2)
+
+            return f"{p1}-{p2}"
+
+        elif level == 3:
+            length = 8
+            chars = []
+
+            if secrets.choice([True, False]):
+                for _ in range(length):
+                    chars.append(secrets.choice(self.digits))
+            else:
+                for _ in range(length):
+                    chars.append(secrets.choice(self.lowercase))
+
+            return "".join(chars)
+
+        default_chars = []
+        for _ in range(8):
+            default_chars.append(secrets.choice(self.lowercase))
+        return "".join(default_chars)
+
