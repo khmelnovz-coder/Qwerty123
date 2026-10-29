@@ -63,31 +63,26 @@ class Qwerty123(QMainWindow, Ui_Qwerty1234):
         self.change_page_smooth(1)
 
     def check_pass(self):
+        if self.is_registration:
+            password = self.input_pass_1.text()
+            if password:
+                salt, ciphertext = self.sec.setup(password)
+                self.db.save_master_password(salt, ciphertext)
 
-        if self.cnt_wrong_pass_inputed < 10:
-            if self.is_registration:
-                password = self.input_pass_1.text()
-                if password:
-                    salt, ciphertext = self.sec.setup(password)
-                    self.db.save_master_password(salt, ciphertext)
-
-                    self.main_window = Qwerty123_m(self.db, self.sec, password)
-                    self.main_window.show()
-                    self.close()
-            else:
-                salt, ciphertext = self.master_data
-                if self.sec.check_password(self.input_pass_1.text(), salt, ciphertext):
-                    self.main_window = Qwerty123_m(self.db, self.sec, self.input_pass_1.text())
-                    self.main_window.show()
-                    self.close()
-                else:
-                    self.input_pass_1.setText("")
-                    self.input_pass_1.setPlaceholderText("Неверный пароль")
-                    self.cnt_wrong_pass_inputed += 1
-                    self.proverochka_na_slitogo_boticka_cheek(n=1)
+                self.main_window = Qwerty123_m(self.db, self.sec, password)
+                self.main_window.show()
+                self.close()
         else:
-            url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            webbrowser.open(url)
+            salt, ciphertext = self.master_data
+            if self.sec.check_password(self.input_pass_1.text(), salt, ciphertext):
+                self.main_window = Qwerty123_m(self.db, self.sec, self.input_pass_1.text())
+                self.main_window.show()
+                self.close()
+            else:
+                self.input_pass_1.setText("")
+                self.input_pass_1.setPlaceholderText("Неверный пароль")
+                self.cnt_wrong_pass_inputed += 1
+                self.proverochka_na_slitogo_boticka_cheek(n=1)
 
 
 if __name__ == "__main__":

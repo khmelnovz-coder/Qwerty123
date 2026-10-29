@@ -3,7 +3,8 @@ from ui.resave_pass_frontend import Ui_resave_pass
 
 
 class ResavePassWindow(QMainWindow, Ui_resave_pass):
-    def __init__(self, security_manager, database_manager, account_data, master_key, on_account_updated=None,
+    def __init__(self, security_manager, database_manager, account_data, master_key,
+                 on_account_updated=None,
                  on_category_added=None):
         super().__init__()
         self.setupUi(self)
